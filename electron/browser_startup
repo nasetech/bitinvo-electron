@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd /home/ssd/SGSCom
+cd /home/SGSCom
 ./mouseEmu &
 
 while true;
@@ -18,6 +18,6 @@ fi
 done
 
 echo "service up"
-cgexec -g cpu:chromium /home/ssd/bitinvo/electron/electron --use-gl=egl --kiosk --touch-devices --touch-events --disable-pinch --overlay-scrollbars --overscroll-history-navigation=0 /home/ssd/bitinvo/electron/browser &
+cgexec -g cpu:chromium /home/bitinvo/electron/electron --use-gl=egl --kiosk --touch-devices --touch-events --disable-pinch --overlay-scrollbars --overscroll-history-navigation=0 /home/bitinvo/electron/browser &
 sleep 3s
-echo $(pidof '/home/ssd/bitinvo/electron/electron --type=zygote --no-sandbox') > /tmp/electron.pid
+echo $(pidof '/home/bitinvo/electron/electron --type=zygote --no-sandbox') > /tmp/electron.pid
