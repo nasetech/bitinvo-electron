@@ -4,30 +4,35 @@ const electron = require('electron')
 const app = electron.app
 // Module to create native browser window.
 const BrowserWindow = electron.BrowserWindow
-const url = 'http://localhost';
+const ipc = require('electron').ipcMain;
+const localUrl = 'file://' + __dirname + '/index.html';
+const appUrl = 'http://localhost';
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
-
-let mainWindow
-function createWindow () {
-  mainWindow = new BrowserWindow()
-  mainWindow.loadURL(url);
-  const ses = mainWindow.webContents.session;
-  ses.clearCache(function(){});
-  mainWindow.setFullScreen(true);
-  // mainWindow.webContents.openDevTools()
-  mainWindow.on('closed', function () {
-    mainWindow = null
-  });
-  mainWindow.webContents.on('did-fail-load', function(){
-    mainWindow.reload();
-  })
-}
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.on('ready', createWindow)
+app.on('ready', function(){
+  let mainWindow = new BrowserWindow();
+  mainWindow.loadURL(localUrl);
+  mainWindow.setFullScreen(true);
+  //mainWindow.webContents.openDevTools()
+
+  mainWindow.webContents.on('did-fail-load', function(){
+    mainWindow.reload();
+  })
+
+  ipc.on('redirect', function(){
+    mainWindow.loadURL(appUrl);
+    const ses = mainWindow.webContents.session;
+    ses.clearCache(function(){});
+  });
+
+  mainWindow.on('closed', function () {
+    mainWindow = null
+  });
+})
 
 // Quit when all windows are closed.
 app.on('window-all-closed', function () {
