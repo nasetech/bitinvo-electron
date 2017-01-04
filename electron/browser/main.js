@@ -4,9 +4,7 @@ const electron = require('electron')
 const app = electron.app
 // Module to create native browser window.
 const BrowserWindow = electron.BrowserWindow
-const ipc = require('electron').ipcMain;
-const localUrl = 'file://' + __dirname + '/index.html';
-const appUrl = 'http://localhost';
+const url = 'http://localhost';
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 
