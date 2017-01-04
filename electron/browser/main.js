@@ -8,29 +8,26 @@ const url = 'http://localhost';
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
-app.on('ready', function(){
-  let mainWindow = new BrowserWindow();
-  mainWindow.loadURL(localUrl);
+let mainWindow
+function createWindow () {
+  mainWindow = new BrowserWindow()
+  mainWindow.loadURL(url);
+  const ses = mainWindow.webContents.session;
+  ses.clearCache(function(){});
   mainWindow.setFullScreen(true);
-  //mainWindow.webContents.openDevTools()
-
-  mainWindow.webContents.on('did-fail-load', function(){
-    mainWindow.reload();
-  })
-
-  ipc.on('redirect', function(){
-    mainWindow.loadURL(appUrl);
-    const ses = mainWindow.webContents.session;
-    ses.clearCache(function(){});
-  });
-
+  // mainWindow.webContents.openDevTools()
   mainWindow.on('closed', function () {
     mainWindow = null
   });
-})
+  mainWindow.webContents.on('did-fail-load', function(){
+    mainWindow.reload();
+  })
+}
+
+// This method will be called when Electron has finished
+// initialization and is ready to create browser windows.
+// Some APIs can only be used after this event occurs.
+app.on('ready', createWindow)
 
 // Quit when all windows are closed.
 app.on('window-all-closed', function () {
