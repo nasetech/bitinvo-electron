@@ -6,7 +6,7 @@ cd /home/SGSCom
 while true;
 do
 
-r=$( netstat -lnt | grep 80)
+r=$( netstat -lnt | grep 443)
 echo "test connection"
 if [[ -z "$r" ]];
 then

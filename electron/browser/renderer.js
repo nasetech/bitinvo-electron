@@ -8,7 +8,7 @@ function connectTest() {
     $.ajax({
         type: "GET",
         cache: false,
-        url: "http://localhost",
+        url: "https://localhost",
         data: "",
         success: function() {
           ipc.send('redirect');

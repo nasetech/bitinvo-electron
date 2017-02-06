@@ -6,7 +6,7 @@ const app = electron.app
 const BrowserWindow = electron.BrowserWindow
 const ipc = require('electron').ipcMain;
 const localUrl = 'file://' + __dirname + '/index.html';
-const appUrl = 'http://localhost';
+const appUrl = 'https://localhost';
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 
@@ -32,6 +32,16 @@ app.on('ready', function(){
   mainWindow.on('closed', function () {
     mainWindow = null
   });
+})
+
+app.on('certificate-error', (event, webContents, url, error, certificate, callback) => {
+  if (certificate.issuerName === 'Nasetech Ltd CA') {
+    // Verification logic.
+    event.preventDefault()
+    callback(true)
+  } else {
+    callback(false)
+  }
 })
 
 // Quit when all windows are closed.
